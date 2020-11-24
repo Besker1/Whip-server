@@ -10,6 +10,4 @@ const db = knex({
 
 app.set("db", db);
 
-app.listen(PORT, () => {
-  console.log(`server is running effectively at http://localhost:${PORT}`);
-});
+app.listen(PORT, () => {});
