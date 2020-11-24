@@ -2,7 +2,6 @@
 const knex = require("knex");
 const app = require("./app");
 const { PORT, DATABASE_URL } = require("./config");
-const { getAllRecipes } = require("./recipes/recipe_router");
 
 const db = knex({
   client: "pg",
