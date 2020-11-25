@@ -40,7 +40,7 @@ users can also have a option for breakfast, lunch and dinner.
 
 - should be running on localhost 8000
 
-# How to make the app fully functional
+## How to run the app
 
 ## set up the front end
 
