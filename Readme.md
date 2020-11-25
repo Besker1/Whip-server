@@ -1,6 +1,6 @@
 # WhipItUP Server
 
-[live](https://whipitup.besker.vercel.app/)
+## [live](https://whipitup.besker.vercel.app/)
 
 whipit up is an app that aloow user to be able to select recipes, between vegan recipes and non vegan.
 users can also have a option for breakfast, lunch and dinner.
