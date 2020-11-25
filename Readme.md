@@ -14,6 +14,32 @@ users can also have a option for breakfast, lunch and dinner.
 - supertest
 - knex
 
+## Enpoints
+
+- Get/
+
+  - Any user can get recipes from the API
+
+- POST/
+  - post recipes for logged users
+- PATCH
+
+  - logged user update posted recipes
+
+- Delete/
+
+  - logged users can delete their own recipe posted.
+
+##
+
+`GET /recipe ` - provie all the recipes in the database
+
+`GET '/'` - provide all the recipes in the database
+
+`GET /vegan`
+
+- provide all the recipes that is vegan
+
 ### Deployed on heroku
 
 ## Want to use my API for your next app ?
