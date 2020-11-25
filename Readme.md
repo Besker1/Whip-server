@@ -40,16 +40,4 @@ users can also have a option for breakfast, lunch and dinner.
 
 - should be running on localhost 8000
 
-## How to run the app
-
-## set up the front end
-
-`cd whipItup`
-
-`npm install`
-
-- make sure the backend url in the app.js state is the same.
-
-and run `npm start`
-
-the app should be running perfectly and use it as your own
+## (CLient-side)[https://github.com/Besker1/whip-cli]
