@@ -165,5 +165,15 @@ VALUES
   ('wippy', 'Ping Won In', 'Ping', 'ping-password');
 
 
-COMMIT;
+INSERT INTO recipes_feedbacks (
+  text,
+  likes,
+  dislikes,
+  recipes_id,
+  user_id
+) VALUES
+  ('great recipe as usual')
 
+
+
+COMMIT;
