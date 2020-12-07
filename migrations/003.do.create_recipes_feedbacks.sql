@@ -4,7 +4,7 @@ CREATE TABLE recipes_feedbacks (
     likes boolean
     dislike boolean
     date_created TIMESTAMPTZ DEFAULT now() NOT NULL,
-    article_id INTEGER
+    recipe_id INTEGER
         REFERENCES recipes_table(id) ON DELETE CASCADE NOT NULL,
     user_id INTEGER
         REFERENCES recipes_users(id) ON DELETE CASCADE NOT NULL
