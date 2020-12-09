@@ -17,5 +17,7 @@ module.exports = {
   TEST_DATABASE_URL:
     process.env.TEST_DATABASE_URL ||
     "postgresql://uncleB@localhost/recipes_db-Test",
+  JWT_SECRET: process.env.JWT_SECRET || "change-this-secret",
+
   errorHandler,
 };

@@ -8,6 +8,7 @@ const helmet = require("helmet");
 const { NODE_ENV, errorHandler } = require("./config");
 const recipe_Router = require("./recipes/recipe_router");
 const logger = require("./logger");
+const authRouter = require("./auth/auth-router");
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 
@@ -29,6 +30,7 @@ app.use(cors());
 
 // calling the route to get the recipes upon request
 app.use(recipe_Router);
+app.use("/api/auth", authRouter);
 
 // for error handling in case entry is not valid
 app.use(errorHandler);
