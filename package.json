@@ -11,6 +11,7 @@
     "migrate:test": "env NODE_ENV=test npm run migrate",
     "migrate:production": "heroku run npm run migrate",
     "seed": "cat ./seeds/seed.recipes.sql | heroku pg:psql",
+    "seedDev": "psql -U uncleB -d recipes_db -f ./seeds/seed.recipes.sql",
     "predeploy": "npm audit && npm run migrate:production",
     "deploy": "git push heroku master",
     "postdeploy": "npm run migrate:production"

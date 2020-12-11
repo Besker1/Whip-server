@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../config");
+// bcrypt.hashSync('password', 8)
 
 const AuthService = {
   getUserWithUserName(db, user_name) {
@@ -15,6 +16,9 @@ const AuthService = {
       subject,
       algorithm: "HS256",
     });
+  },
+  hashPassword(password) {
+    return bcrypt.hashSync(password, 8);
   },
   verifyJwt(token) {
     return jwt.verify(token, config.JWT_SECRET, {
