@@ -7,7 +7,7 @@ CREATE TABLE recipes_users (
   date_modified TIMESTAMPTZ
 );
 
-ALTER TABLE recipes_table_
+ALTER TABLE recipes_table
   ADD COLUMN
     author_id INTEGER REFERENCES recipes_users(id)
     ON DELETE SET NULL;
