@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO recipes_table (title, content, meal, is_vegan, img)
+INSERT INTO recipes_table ( title,content, meal, is_vegan, img)
 VALUES ('Fluffy Almond Breeze Blueberry Pancakes',
 '{"1 cup all-purpose flour",
 "2 tablespoons granulated sugar",
@@ -97,7 +97,7 @@ VALUES ('Fluffy Almond Breeze Blueberry Pancakes',
 'breakfast', true, 'img'),
 
 
-('Couscous with Olives and Sun-Dried Tomato', '{
+('Couscous with Olives and Sun-Dried Tomato','{
 "1 ¼ cups vegetable broth",
 "1 ¼ cups water",
 "2 cups pearl (Israeli) couscous",
@@ -127,7 +127,7 @@ VALUES ('Fluffy Almond Breeze Blueberry Pancakes',
 "1 tablespoon butter"}', 'lunch', false, 'img'),
 
 
-('One-Pot Moroccan Shrimp Tagine', '{
+('One-Pot Moroccan Shrimp Tagine','{
 "3 tablespoons olive oil",
 "4 large carrots, chopped",
 "1 large sweet onion, diced",
@@ -165,14 +165,14 @@ VALUES
   ('wippy', 'Ping Won In', 'ping-password');
 
 
-INSERT INTO recipes_feedbacks (
-  text,
-  likes,
-  dislikes,
-  recipes_id,
-  user_id
-) VALUES
-  ('great recipe as usual', true, false);
+-- INSERT INTO recipes_feedbacks (
+--   text,
+--   likes,
+--   dislike,
+--   recipe_id,
+--   user_id
+-- ) VALUES
+--   ('great recipe as usual', true, false,1, 2);
 
 
 
