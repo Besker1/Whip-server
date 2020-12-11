@@ -5,10 +5,11 @@ const recipe_Router = express.Router();
 const jasonParser = express.json();
 const logger = require("../logger");
 const recipes = require("./recipe_service.js");
+const { requireAuth } = require("../middleware/jwt-auth");
 
 recipe_Router
   .route("/recipe")
-  .get((req, res, next) => {
+  .get(requireAuth, (req, res, next) => {
     const knexInstance = req.app.get("db");
     recipes
       .getAllRecipes(knexInstance)
@@ -18,7 +19,7 @@ recipe_Router
       .catch(next);
   })
 
-  .post(jasonParser, (req, res) => {
+  .post(requireAuth, jasonParser, (req, res, next) => {
     // move implementation logic into here
     const { title, content, meal, regularity, img } = req.body;
 
@@ -68,7 +69,7 @@ recipe_Router
 //recipe route with ids
 recipe_Router
   .route("/recipe/:id")
-  .get((req, res) => {
+  .get(requireAuth, (req, res, next) => {
     const { id } = req.params;
     const recipe = recipes.find((c) => c.id === id);
 
@@ -94,7 +95,7 @@ recipe_Router
       .catch(next);
   })
 
-  .patch((rep, res, next) => {
+  .patch(requireAuth, (rep, res, next) => {
     const knexInstance = req.app.get("db");
     const { id } = req.params;
     const { title, content, meal, regularity, img } = req.body;

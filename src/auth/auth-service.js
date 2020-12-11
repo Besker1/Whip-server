@@ -4,6 +4,7 @@ const config = require("../config");
 
 const AuthService = {
   getUserWithUserName(db, user_name) {
+    console.log(user_name);
     return db("recipes_users").where({ user_name }).first();
   },
   comparePasswords(password, hash) {
@@ -20,4 +21,8 @@ const AuthService = {
       algorithms: ["HS256"],
     });
   },
+};
+
+module.exports = {
+  AuthService,
 };
