@@ -13,3 +13,5 @@ app.set("db", db);
 app.listen(PORT, () => {
   console.log("server is running");
 });
+
+console.log(PORT);

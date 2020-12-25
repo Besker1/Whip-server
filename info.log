@@ -65,3 +65,28 @@
 {"message":"Unauthorized request to path: /api/recipes","level":"error"}
 {"message":"Unauthorized request to path: /api/recipes","level":"error"}
 {"message":"Unauthorized request to path: /api/recipes","level":"error"}
+{"message":"Meal is required","level":"error"}
+{"message":"recipe with id 85f95b92-d428-4511-b32b-a3bca0317d56 created","level":"info"}
+{"message":"recipe with id b7d7c3a7-6792-459b-ba9f-9af5c2197847 created","level":"info"}
+{"message":"recipe with id 610ef762-f247-4593-bb3b-225d59774d05 created","level":"info"}
+{"message":"recipe with id e27c890b-7227-4a8a-a65a-6a841e60f8a2 created","level":"info"}
+{"message":"recipe with id 2d12181b-8830-427b-bfcf-cdaffe4e4935 created","level":"info"}
+{"message":"recipe with id a262d3d2-b06f-456e-9001-1eefa19634c0 created","level":"info"}
+{"message":"have to enter if it's vegan or not","level":"error"}
+{"message":"recipe with id 495a21ec-9965-4315-b721-00e316918d5b created","level":"info"}
+{"message":"recipe with id 7ea308b1-8d62-47f3-a314-33e984b3d682 created","level":"info"}
+{"message":"recipe with id 5aa46980-913c-46f3-b1a2-841eb70691ad created","level":"info"}
+{"message":"recipe with id 72521116-d6de-4333-94f9-e9a6727f02d8 created","level":"info"}
+{"message":"recipe with id 760948d5-c70c-4ce2-ac51-38126f429367 created","level":"info"}
+{"message":"recipe with id ad72354d-fc79-4d90-b99a-8872cfdfac5c created","level":"info"}
+{"message":"recipe with id f3a98148-5ae6-40ee-a85a-aaa2ec69dbda created","level":"info"}
+{"message":"recipe with id 3e49be83-66b3-4f92-9204-d913df28cf0b created","level":"info"}
+{"message":"recipe with id 668ba369-a167-43e9-b144-c1ef98ee8569 created","level":"info"}
+{"message":"recipe with id undefined created","level":"info"}
+{"message":"recipe with id undefined created","level":"info"}
+{"message":"recipe with id undefined created","level":"info"}
+{"message":"recipe with id undefined created","level":"info"}
+{"message":"recipe with id undefined created","level":"info"}
+{"message":"recipe with id undefined created","level":"info"}
+{"message":"recipe with id undefined created","level":"info"}
+{"message":"recipe with id undefined created","level":"info"}

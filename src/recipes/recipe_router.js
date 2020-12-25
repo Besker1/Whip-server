@@ -1,6 +1,6 @@
 /* eslint-disable strict */
 const express = require("express");
-const { v4: uuid } = require("uuid");
+const { v2: uid } = require("uuid");
 const recipe_Router = express.Router();
 const jasonParser = express.json();
 const logger = require("../logger");
@@ -21,7 +21,8 @@ recipe_Router
 
   .post(jasonParser, (req, res, next) => {
     // move implementation logic into here
-    const { title, content, meal, regularity, img } = req.body;
+    let { title, content, meal, is_vegan, img } = req.body;
+    console.log(content);
 
     if (!title) {
       logger.error("Title is required");
@@ -36,22 +37,26 @@ recipe_Router
       logger.error("Meal is required");
       return res.status(400).send("Invalid data");
     }
-    if (!regularity) {
+    if (!is_vegan) {
       logger.error("have to enter if it's vegan or not");
       return res.status(400).send("Invalid data");
     }
+    if (!img) {
+      img = "here";
+    }
 
-    const id = uuid();
-    const newRecipe = {
+    const id = uid;
+    let newRecipe = {
       id,
       title,
       content,
       meal,
-      regularity,
+      is_vegan,
       img,
     };
+    console.log(newRecipe);
     recipes
-      .insert_new_recipe(req.app.get("db"), newRecipe)
+      .insertNewRecipe(req.app.get("db"), newRecipe)
       .then((recipe) => {
         res.status(201).location(`/recipe/${recipe.id}`).json(recipe);
       })
@@ -60,10 +65,8 @@ recipe_Router
 
     logger.info(`recipe with id ${id} created`);
 
-    res
-      .status(201)
-      .location(`http://localhost:8000/recipes/${id}`)
-      .json(recipes);
+    res.status(201).location(`http://localhost:8000/recipes/${id}`);
+    // .json(recipe);
   });
 
 //recipe route with ids
@@ -98,13 +101,13 @@ recipe_Router
   .patch((rep, res, next) => {
     const knexInstance = req.app.get("db");
     const { id } = req.params;
-    const { title, content, meal, regularity, img } = req.body;
-    const newRecipe = {
+    const { title, content, meal, is_vegan, img } = req.body;
+    let newRecipe = {
       id,
       title,
       content,
       meal,
-      regularity,
+      is_vegan,
       img,
     };
     recipes
@@ -128,16 +131,34 @@ recipe_Router
       })
       .catch(next);
   })
-  .post((req, res, next) => {
-    const { title, content, meal, regularity, img } = req.body;
+  .post(jasonParser, (req, res, next) => {
+    const { title, content, meal, is_vegan, img } = req.body;
 
-    const recipeId = uuid();
-    const newRecipe = {
-      recipeId,
+    if (!title) {
+      logger.error("Title is required");
+      return res.status(400).send("Invalid data");
+    }
+
+    if (!content) {
+      logger.error("Content is required");
+      return res.status(400).send("Invalid data");
+    }
+    if (!meal) {
+      logger.error("Meal is required");
+      return res.status(400).send("Invalid data");
+    }
+    if (!is_vegan) {
+      logger.error("have to enter if it's vegan or not");
+      return res.status(400).send("Invalid data");
+    }
+
+    const id = uid();
+    let newRecipe = {
+      id,
       title,
       content,
       meal,
-      regularity,
+      is_vegan,
       img,
     };
     recipes
@@ -163,13 +184,13 @@ recipe_Router
   .patch((req, res, next) => {
     const knexInstance = req.app.get("db");
     const { id } = req.params;
-    const { title, content, meal, regularity, img } = req.body;
+    const { title, content, meal, is_vegan, img } = req.body;
     const newRecipe = {
       id,
       title,
       content,
       meal,
-      regularity,
+      is_vegan,
       img,
     };
     recipes
