@@ -12,11 +12,11 @@ const recipe_services = {
   },
 
   getRecipesById(knex, id) {
-    return knex.from("recipes_table").select("*").where("id", id).first();
+    return knex("recipes_table").select("*").where("id", id).first();
   },
 
   deleteRecipes(knex, id) {
-    return knex("recipes_table").where({ id }).delete();
+    return knex("recipes_table").where("id", id).delete();
   },
 
   updateRecipes(knex, id, newRecipeValues) {

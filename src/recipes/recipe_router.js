@@ -1,12 +1,20 @@
 /* eslint-disable strict */
 const express = require("express");
-const { v2: uid } = require("uuid");
+const path = require("path");
+const { uid } = require("uid");
 const recipe_Router = express.Router();
 const jasonParser = express.json();
 const logger = require("../logger");
 const recipes = require("./recipe_service.js");
 const { requireAuth } = require("../middleware/jwt-auth");
 
+const serializeRecipes = (recipes) => ({
+  id: recipes.id,
+  title: xss(recipes.title),
+  meal: recipes.meal,
+  content: xss(recipes.content),
+  is_vegan: recipes.is_vegan,
+});
 recipe_Router
   .route("/recipe")
   .get((req, res, next) => {
@@ -22,31 +30,37 @@ recipe_Router
   .post(jasonParser, (req, res, next) => {
     // move implementation logic into here
     let { title, content, meal, is_vegan, img } = req.body;
-    console.log(content);
+    !img ? (img = "here") : img;
+    let newRecipe = { title, content, meal, is_vegan, img };
+    for (const [key, value] of Object.entries(newRecipe)) {
+      if (value == null) {
+        logger.error(`you have to enter ${key}`);
+        return res.status(400).json({
+          error: { message: `Missing '${key}' in request body` },
+        });
+      }
+    }
+    recipes
+      .insertNewRecipe(req.app.get("db"), newRecipe)
+      .then((recipe) => {
+        res
+          .location(path.posix.join(req.originalUrl + `/${recipe.recipeId}`))
+          .status(201)
+          .json(serializeRecipes(recipe));
+      })
+      .catch(next);
+    //// log the new recipe creation and send a response including a location header.
 
-    if (!title) {
-      logger.error("Title is required");
-      return res.status(400).send("Invalid data");
-    }
+    logger.info(`recipe with id ${id} created`);
+  })
 
-    if (!content) {
-      logger.error("Content is required");
-      return res.status(400).send("Invalid data");
-    }
-    if (!meal) {
-      logger.error("Meal is required");
-      return res.status(400).send("Invalid data");
-    }
-    if (!is_vegan) {
-      logger.error("have to enter if it's vegan or not");
-      return res.status(400).send("Invalid data");
-    }
-    if (!img) {
-      img = "here";
-    }
+  .patch((req, res, next) => {
+    const knexInstance = req.app.get("db");
+    const { id } = req.params;
+    const { title, content, meal, is_vegan, img } = req.body;
+    !img ? (img = "here") : img;
 
-    const id = uid;
-    let newRecipe = {
+    const newRecipe = {
       id,
       title,
       content,
@@ -54,27 +68,32 @@ recipe_Router
       is_vegan,
       img,
     };
-    console.log(newRecipe);
     recipes
-      .insertNewRecipe(req.app.get("db"), newRecipe)
-      .then((recipe) => {
-        res.status(201).location(`/recipe/${recipe.id}`).json(recipe);
+      .updateRecipes(knexInstance, id, newRecipe)
+      .then((recipe) => res.json(serializeRecipes(recipe)));
+    res.status(201).catch(next);
+    logger.info(`recipe with ${id} has been updated`);
+  })
+  .delete((req, res, next) => {
+    const knexInstance = req.app.get("db");
+    const { id } = req.params;
+    debugger;
+    recipes
+      .deleteRecipes(knexInstance, id)
+      .then((recipeSelected) => {
+        res.status(204).end();
       })
       .catch(next);
-    //// log the new recipe creation and send a response including a location header.
-
-    logger.info(`recipe with id ${id} created`);
-
-    res.status(201).location(`http://localhost:8000/recipes/${id}`);
-    // .json(recipe);
+    logger.info(`recipe with ${id} has been deleted`);
   });
 
 //recipe route with ids
 recipe_Router
   .route("/recipe/:id")
   .get((req, res, next) => {
+    const knexInstance = req.app.get("db");
     const { id } = req.params;
-    const recipe = recipes.find((c) => c.id === id);
+    const recipe = recipes.getRecipesById(knexInstance, id);
 
     // looking for the recipe
     if (!recipe) {
@@ -96,12 +115,15 @@ recipe_Router
         res.status(204).end();
       })
       .catch(next);
+    logger.info(`recipe with ${id} has been deleted`);
   })
 
   .patch((rep, res, next) => {
     const knexInstance = req.app.get("db");
     const { id } = req.params;
     const { title, content, meal, is_vegan, img } = req.body;
+    !img ? (img = "here") : img;
+
     let newRecipe = {
       id,
       title,
@@ -133,7 +155,7 @@ recipe_Router
   })
   .post(jasonParser, (req, res, next) => {
     const { title, content, meal, is_vegan, img } = req.body;
-
+    !img ? (img = "here") : img;
     if (!title) {
       logger.error("Title is required");
       return res.status(400).send("Invalid data");
@@ -152,9 +174,18 @@ recipe_Router
       return res.status(400).send("Invalid data");
     }
 
-    const id = uid();
+    // function makeIds() {
+    //   const temp = [];
+    //   for (let i = 20; i < 10; i++) {
+    //     if (temp.includes(i)) {
+    //       i++;
+    //     }
+    //     temp.push(i);
+    //   }
+    //   return temp[temp.length - 1];
+    // }
+    // const id = makeIds();
     let newRecipe = {
-      id,
       title,
       content,
       meal,
@@ -185,6 +216,7 @@ recipe_Router
     const knexInstance = req.app.get("db");
     const { id } = req.params;
     const { title, content, meal, is_vegan, img } = req.body;
+    !img ? (img = "here") : img;
     const newRecipe = {
       id,
       title,

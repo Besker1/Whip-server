@@ -157,7 +157,7 @@ VALUES ('Fluffy Almond Breeze Blueberry Pancakes',
 
 INSERT INTO recipes_users (user_name, full_name, password)
 VALUES
-  ('dunder', 'Dunder Mifflin', 'password'),
+  ('Besker', 'Dunder Mifflin', 'hireme'),
   ('b.deboop', 'Bodeep Deboop',  'bo-password'),
   ('c.bloggs', 'Charlie Bloggs', 'charlie-password'),
   ('s.smith', 'Sam Smith', 'sam-password'),
