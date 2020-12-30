@@ -11,8 +11,8 @@ const recipe_services = {
     return knex.insert(newRecipe).into("recipes_table").returning("*");
   },
 
-  getRecipesById(knex, id) {
-    return knex("recipes_table").select("*").where("id", id).first();
+  getById(knex, id) {
+    return knex("recipes_table").where("id", id).returning("*");
   },
 
   deleteRecipes(knex, id) {
@@ -20,7 +20,11 @@ const recipe_services = {
   },
 
   updateRecipes(knex, id, newRecipeValues) {
-    return knex("recipes_table").where({ id }).update(newRecipeValues);
+    // return knex("recipes_table").where("id", id).update(newRecipeValues, returning=true).returning();
+    return knex("recipes_table")
+      .where({ id: id })
+      .update(newRecipeValues, (returning = true))
+      .returning("*");
   },
 };
 

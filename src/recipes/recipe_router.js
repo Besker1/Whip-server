@@ -1,9 +1,10 @@
 /* eslint-disable strict */
 const express = require("express");
 const path = require("path");
+const xss = require("xss");
 const { uid } = require("uid");
 const recipe_Router = express.Router();
-const jasonParser = express.json();
+const jsonParser = express.json();
 const logger = require("../logger");
 const recipes = require("./recipe_service.js");
 const { requireAuth } = require("../middleware/jwt-auth");
@@ -27,7 +28,7 @@ recipe_Router
       .catch(next);
   })
 
-  .post(jasonParser, (req, res, next) => {
+  .post(jsonParser, (req, res, next) => {
     // move implementation logic into here
     let { title, content, meal, is_vegan, img } = req.body;
     !img ? (img = "here") : img;
@@ -54,11 +55,11 @@ recipe_Router
     logger.info(`recipe with id ${id} created`);
   })
 
-  .patch((req, res, next) => {
+  .patch(jsonParser, (req, res, next) => {
     const knexInstance = req.app.get("db");
     const { id } = req.params;
-    const { title, content, meal, is_vegan, img } = req.body;
-    !img ? (img = "here") : img;
+    const { title, content, meal, is_vegan, img = "here" } = req.body;
+    // !img ? (img = "here") : img;
 
     const newRecipe = {
       id,
@@ -68,10 +69,13 @@ recipe_Router
       is_vegan,
       img,
     };
+
+    console.log(newRecipe);
     recipes
+
       .updateRecipes(knexInstance, id, newRecipe)
-      .then((recipe) => res.json(serializeRecipes(recipe)));
-    res.status(201).catch(next);
+      .then((response) => res.json(serializeRecipes(response)).status(201))
+      .catch(next);
     logger.info(`recipe with ${id} has been updated`);
   })
   .delete((req, res, next) => {
@@ -93,15 +97,15 @@ recipe_Router
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     const { id } = req.params;
-    const recipe = recipes.getRecipesById(knexInstance, id);
-
+    console.log("this is an", id);
+    recipes.getById(knexInstance, id).then((recipes) => {
+      if (!recipes) {
+        logger.error(`recipe with id ${id} not found.`);
+        return res.status(404).send("recipe Not Found");
+      }
+      res.json(recipes);
+    });
     // looking for the recipe
-    if (!recipe) {
-      logger.error(`recipe with id ${id} not found.`);
-      return res.status(404).send("recipe Not Found");
-    }
-
-    res.json(recipe);
   })
 
   /// search the recipe and by id
@@ -109,6 +113,7 @@ recipe_Router
   .delete((req, res, next) => {
     const knexInstance = req.app.get("db");
     const { id } = req.params;
+    console.log("this is an", id);
     recipes
       .deleteRecipes(knexInstance, id)
       .then((recipeSelected) => {
@@ -118,24 +123,24 @@ recipe_Router
     logger.info(`recipe with ${id} has been deleted`);
   })
 
-  .patch((rep, res, next) => {
+  .patch(jsonParser, (req, res, next) => {
     const knexInstance = req.app.get("db");
-    const { id } = req.params;
-    const { title, content, meal, is_vegan, img } = req.body;
-    !img ? (img = "here") : img;
+    let { id } = req.params;
+    let { title, content, meal, is_vegan } = req.body;
 
-    let newRecipe = {
+    console.log(req.body);
+    const newRecipe = {
       id,
       title,
       content,
       meal,
       is_vegan,
-      img,
     };
+    console.log("besker the great", newRecipe);
     recipes
+
       .updateRecipes(knexInstance, id, newRecipe)
-      .then((res) => res.json())
-      .res.status(201)
+      .then((response) => res.json(serializeRecipes(response)).status(201))
       .catch(next);
     logger.info(`recipe with ${id} has been updated`);
   });
@@ -153,7 +158,7 @@ recipe_Router
       })
       .catch(next);
   })
-  .post(jasonParser, (req, res, next) => {
+  .post(jsonParser, (req, res, next) => {
     const { title, content, meal, is_vegan, img } = req.body;
     !img ? (img = "here") : img;
     if (!title) {
@@ -215,7 +220,7 @@ recipe_Router
   .patch((req, res, next) => {
     const knexInstance = req.app.get("db");
     const { id } = req.params;
-    const { title, content, meal, is_vegan, img } = req.body;
+    let { title, content, meal, is_vegan, img } = req.body;
     !img ? (img = "here") : img;
     const newRecipe = {
       id,
